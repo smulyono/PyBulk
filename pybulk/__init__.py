@@ -34,6 +34,7 @@ beatbox_path = os.path.realpath(os.path.abspath( \
 if beatbox_path not in sys.path:
     sys.path.insert(0,beatbox_path)
 import beatbox
+from beatbox import SoapFaultError
 import xmltramp
 
 class Callout(object):
@@ -162,7 +163,7 @@ class sfBulk(object):
     JOB     = "job"
     USERAGENT= "Python-BulkApiClient/26.0.0"
     API_VERSION= "26.0"
-    MAX_RECORDS = 100000
+    MAX_RECORDS = 10000
     
     # LOGIN CREDENTIALS , CHANGE THIS FOR YOUR ORGANIZATION
     USERNAME = "PUT YOUR USERNAME HERE"
@@ -189,21 +190,24 @@ class sfBulk(object):
     # @param String username (optional), other than using constant USERNAME; the library can also accept username as parameter
     # @param String password (optional), other than using constant PASSWORD; the library can also accept username as parameter     
     def login (self, username=None, password=None):
-        # override beatbox server url 
+        # override beatbox server url
         if self.sandboxmode :
             self.svc.serverUrl = "https://test.salesforce.com/services/Soap/u/" + self.API_VERSION
         else:
             self.svc.serverUrl = "https://login.salesforce.com/services/Soap/u/" + self.API_VERSION
-            
+
         if username is None:
             username = self.USERNAME
         if password is None:
             password = self.PASSWORD
-                        
-        loginResult = self.svc.login(username,password)
-        # update the session
-        self.sessionid = str(loginResult[self.sf.sessionId])
-    
+        
+        try :
+            loginResult = self.svc.login(username,password)
+            # update the session
+            self.sessionid = str(loginResult[self.sf.sessionId])
+        except SoapFaultError, e:
+            sys.exit("unable to continue! -- " + e.faultString)
+            
     # logout user completely 
     def logout(self):
         if self.sessionid is not None:
@@ -397,7 +401,7 @@ def createxmlNode(element, value):
 
 # simple utility to load from csv file
 # Assumption : first line will be the field name
-def loadFromCSVFile(filename, max_count=100000, omit_header=False):
+def loadFromCSVFile(filename, max_count=10000, omit_header=False):
     sane_files = []
     retval= ""
     linecount = 0

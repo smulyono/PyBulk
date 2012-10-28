@@ -21,17 +21,20 @@ if beatbox_path not in sys.path:
     sys.path.insert(0,beatbox_path)
 
 if __name__ == '__main__':
+    # for bulk operation
+    org_bulk = raw_input("Specify your instance org (e.g https://na1.salesforce.com) : ")
     print """
-        Choose your instance mode:
-        1. Production
-        2. Sandbox
+Choose your instance mode:
+    1. Production / Development
+    2. Sandbox
     """
+
     org_choice = None
     while org_choice != "1" and org_choice != "2":
         org_choice = raw_input(">> ")
     
     # initate login
-    obb = sfBulk();
+    obb = sfBulk(org_bulk);
     # for sandbox login operation
     if (org_choice == "2"):
         obb.sandboxmode = True
@@ -47,17 +50,15 @@ if __name__ == '__main__':
     obb.login(username, password)
     print "User logged in ! \n"
     
-    # for bulk operation
-    org_bulk = raw_input("Specify your instance org (e.g na1.salesforce.com) : ")
     
     input = None
     while input != "99":
         print """
-            Operation:
-            1. Create , Update, Delete operation from CSV File
-            2. Query from CSV File
-            3. Query (SOQL input)
-            99. I am done
+    Operation:
+    1. Create , Update, Delete operation from CSV File
+    2. Query from CSV File
+    3. Query (SOQL input)
+    99. I am done
         """
         input = raw_input(">> ")
         
@@ -110,7 +111,7 @@ if __name__ == '__main__':
             # Create new Batch
             csv_filename = raw_input("CSV File name to load : " )
             # For this single line query, we will use the mode of omit_header in loadFromCSVFile
-            batchId = obb.createBatch(jobinfo, loadFromCSVFile(csv_filename, 100000, True)[0])
+            batchId = obb.createBatch(jobinfo, loadFromCSVFile(csv_filename, 10000, True)[0])
             
             ## Uncomment this for manual soql input
             ## soql_input = raw_input("SOQL : ")
