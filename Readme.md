@@ -9,13 +9,15 @@ Requirement:
 ------------
 The application will demonstrate how to create, read, update and delete records in Salesforce.com in bulk using the Bulk API. 
 
-###For login and logout operation, utilizing the Beatbox library from https://github.com/superfell/Beatbox
+###For login and logout operation, utilizing the Beatbox library from 
+<https://github.com/superfell/Beatbox>
 
 ###How to Run :
     $ python crudtest.py
 
 ###Video Instruction : 
 <http://www.screencast.com/t/00cYnKLB> -- showing how to use CUD operation
+
 <http://www.screencast.com/t/oJxfheP9dv6> -- show how to do bulk query
 
 
