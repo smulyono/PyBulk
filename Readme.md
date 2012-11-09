@@ -1,18 +1,29 @@
 Salesforce Bulk API Demo with Python
+====================================
 
-Cloudspokes Challenge : http://www.cloudspokes.com/challenges/1857
+Cloudspokes Challenge : 
+-----------------------
+http://www.cloudspokes.com/challenges/1857
 
 Requirement:
+------------
 The application will demonstrate how to create, read, update and delete records in Salesforce.com in bulk using the Bulk API. 
 
-For login and logout operation, utilizing the Beatbox library from https://github.com/superfell/Beatbox
+###For login and logout operation, utilizing the Beatbox library from https://github.com/superfell/Beatbox
 
-How to Run :
-$ python crudtest.py
+###How to Run :
+    $ python crudtest.py
+
+###Video Instruction : 
+<http://www.screencast.com/t/00cYnKLB> -- showing how to use CUD operation
+<http://www.screencast.com/t/oJxfheP9dv6> -- show how to do bulk query
+
 
 Instructions to do CRUD Operation
+=================================
 
-(C)reate Operation:
+##(C)reate Operation:
+``` python
     # initate login
     obb = sfBulk();
     obb.login(username, password)
@@ -34,8 +45,10 @@ Instructions to do CRUD Operation
     obb.closeJob(jobinfo)
     # logout
     obb.logout()
+```
 
-(U)pdate Operation:
+##(U)pdate Operation:
+```python
     obb = sfBulk();
     obb.login(username, password)
     jobinfo = sfBulkJobInfo()
@@ -46,8 +59,10 @@ Instructions to do CRUD Operation
     batchIds = obb.createBatchFromCSV(jobinfo, "update_csv.txt")
     obb.closeJob(jobinfo)
     obb.logout()
+```
 
-(D)elete Operation:
+##(D)elete Operation:
+```python
     obb = sfBulk();
     obb.login(username, password)
     jobinfo = sfBulkJobInfo()
@@ -58,8 +73,10 @@ Instructions to do CRUD Operation
     batchIds = obb.createBatchFromCSV(jobinfo, "delete_csv.txt")
     obb.closeJob(jobinfo)
     obb.logout()
+```
 
-(R)ead / Query Operation:
+##(R)ead / Query Operation:
+```python
     obb = sfBulk();
     obb.login(username, password)
     jobinfo = sfBulkJobInfo()
@@ -72,9 +89,11 @@ Instructions to do CRUD Operation
     # batchId  = obb.createBatch(jobInfo, "Select id, name from Account")
     obb.closeJob(jobinfo)
     obb.logout()
+```
 
-Another operation included in the library:
-    * Ability to find batch status, Example during query 
+##Another operation included in the library:
+    * Ability to find batch status, Example during query
+```python 
     obb = sfBulk();
     obb.login(username, password)
     jobinfo = sfBulkJobInfo()
@@ -95,5 +114,5 @@ Another operation included in the library:
     
     obb.closeJob(jobinfo)
     obb.logout()
-    
+```   
     
