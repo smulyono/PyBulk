@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Pybulk : Bulk API force.com in Python" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Pybulk</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/smulyono/PyBulk">View on GitHub</a>
+
+          <h1 id="project_title">Pybulk</h1>
+          <h2 id="project_tagline">Bulk API force.com in Python</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/smulyono/PyBulk/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/smulyono/PyBulk/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Salesforce Bulk API Demo with Python</h1>
+
+<h2>Requirement:</h2>
+
+<p>The application will demonstrate how to create, read, update and delete records in Salesforce.com in bulk using the Bulk API. </p>
+
+<h3>For login and logout operation, utilizing the Beatbox library from</h3>
+
+<p><a href="https://github.com/superfell/Beatbox">https://github.com/superfell/Beatbox</a></p>
+
+<h3>How to Run :</h3>
+
+<pre><code>$ python crudtest.py
+</code></pre>
+
+<h3>Video Instruction :</h3>
+
+<p><a href="http://www.screencast.com/t/00cYnKLB">http://www.screencast.com/t/00cYnKLB</a> -- showing how to use CUD operation</p>
+
+<p><a href="http://www.screencast.com/t/oJxfheP9dv6">http://www.screencast.com/t/oJxfheP9dv6</a> -- show how to do bulk query</p>
+
+<h1>Instructions to do CRUD Operation</h1>
+
+<h2>(C)reate Operation:</h2>
+
+<div class="highlight"><pre>    <span class="c"># initate login</span>
+    <span class="n">obb</span> <span class="o">=</span> <span class="n">sfBulk</span><span class="p">();</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="c"># Create new job</span>
+    <span class="n">jobinfo</span> <span class="o">=</span> <span class="n">sfBulkJobInfo</span><span class="p">()</span>
+    <span class="c"># set up job operation</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="s">"insert"</span>
+    <span class="c"># set up object to operate</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="s">"Account"</span>
+    <span class="c"># set up the content type for the batch data, For this version only CSV Is supported</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">contentType</span> <span class="o">=</span> <span class="s">"CSV"</span>
+    <span class="c"># set up concurrencyMode (optional)</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">concurrencyMode</span> <span class="o">=</span> <span class="s">"Parallel"</span>
+    <span class="c"># the actual creation of the job</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">createJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="c"># Create new Batch</span>
+    <span class="n">batchIds</span> <span class="o">=</span> <span class="n">obb</span><span class="o">.</span><span class="n">createBatchFromCSV</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">,</span> <span class="s">"insert_csv.txt"</span><span class="p">)</span>
+    <span class="c"># close the job</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">closeJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="c"># logout</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+</pre></div>
+
+<h2>(U)pdate Operation:</h2>
+
+<div class="highlight"><pre>    <span class="n">obb</span> <span class="o">=</span> <span class="n">sfBulk</span><span class="p">();</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="n">jobinfo</span> <span class="o">=</span> <span class="n">sfBulkJobInfo</span><span class="p">()</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="s">"update"</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="s">"Account"</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">contentType</span> <span class="o">=</span> <span class="s">"CSV"</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">createJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="n">batchIds</span> <span class="o">=</span> <span class="n">obb</span><span class="o">.</span><span class="n">createBatchFromCSV</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">,</span> <span class="s">"update_csv.txt"</span><span class="p">)</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">closeJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+</pre></div>
+
+<h2>(D)elete Operation:</h2>
+
+<div class="highlight"><pre>    <span class="n">obb</span> <span class="o">=</span> <span class="n">sfBulk</span><span class="p">();</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="n">jobinfo</span> <span class="o">=</span> <span class="n">sfBulkJobInfo</span><span class="p">()</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="s">"delete"</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="s">"Account"</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">contentType</span> <span class="o">=</span> <span class="s">"CSV"</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">createJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="n">batchIds</span> <span class="o">=</span> <span class="n">obb</span><span class="o">.</span><span class="n">createBatchFromCSV</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">,</span> <span class="s">"delete_csv.txt"</span><span class="p">)</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">closeJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+</pre></div>
+
+<h2>(R)ead / Query Operation:</h2>
+
+<div class="highlight"><pre>    <span class="n">obb</span> <span class="o">=</span> <span class="n">sfBulk</span><span class="p">();</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="n">jobinfo</span> <span class="o">=</span> <span class="n">sfBulkJobInfo</span><span class="p">()</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="s">"query"</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="s">"Account"</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">contentType</span> <span class="o">=</span> <span class="s">"CSV"</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">createJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="n">batchIds</span> <span class="o">=</span> <span class="n">obb</span><span class="o">.</span><span class="n">createBatchFromCSV</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">,</span> <span class="s">"query_csv.txt"</span><span class="p">)</span>
+    <span class="c"># you can also use SOQL directly using</span>
+    <span class="c"># batchId  = obb.createBatch(jobInfo, "Select id, name from Account")</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">closeJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+</pre></div>
+
+<h2>Another operation included in the library:</h2>
+
+<pre><code>* Ability to find batch status, Example during query
+</code></pre>
+
+<div class="highlight"><pre>    <span class="n">obb</span> <span class="o">=</span> <span class="n">sfBulk</span><span class="p">();</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="n">jobinfo</span> <span class="o">=</span> <span class="n">sfBulkJobInfo</span><span class="p">()</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="s">"query"</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">_object</span> <span class="o">=</span> <span class="s">"Account"</span>
+    <span class="n">jobinfo</span><span class="o">.</span><span class="n">contentType</span> <span class="o">=</span> <span class="s">"CSV"</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">createJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="n">batchIds</span> <span class="o">=</span> <span class="n">obb</span><span class="o">.</span><span class="n">createBatchFromCSV</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">,</span> <span class="s">"query_csv.txt"</span><span class="p">)</span>
+    <span class="c"># wait until it finishes</span>
+    <span class="k">while</span> <span class="p">(</span><span class="ow">not</span> <span class="n">obb</span><span class="o">.</span><span class="n">is_jobs_completed</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)):</span>
+        <span class="n">pprint</span><span class="p">(</span><span class="n">jobinfo</span><span class="o">.</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c"># show the result to console</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="s">"Receiving Result from Salesforce : </span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="c"># Individually look for batch result</span>
+    <span class="n">pprint</span><span class="p">(</span><span class="n">obb</span><span class="o">.</span><span class="n">showBatchResult</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">,</span> <span class="n">batchIds</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="n">obb</span><span class="o">.</span><span class="n">closeJob</span><span class="p">(</span><span class="n">jobinfo</span><span class="p">)</span>
+    <span class="n">obb</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+</pre></div>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Pybulk maintained by <a href="https://github.com/smulyono">smulyono</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
